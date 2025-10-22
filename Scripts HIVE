@@ -1,0 +1,41 @@
+# CREACION DE BASE DE DATOS Y TABLAS
+
+-- Base de datos StoreChile
+CREATE DATABASE IF NOT EXISTS storechile;
+
+USE storechile;
+
+-- Tabla ventas
+CREATE EXTERNAL TABLE IF NOT EXISTS ventas(
+    transaccion_id STRING,
+    producto_id STRING,
+    precio DOUBLE,
+    metodo_pago STRING,
+    fecha STRING,
+    ubicacion STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/storechile/ventas/';
+
+-- Tabla clientes
+CREATE EXTERNAL TABLE IF NOT EXISTS clientes(
+    cliente_id STRING,
+    nombre STRING,
+    correo STRING,
+    historial_compras STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/storechile/clientes/';
+
+# EJEMPLO CONSULTA HIVE
+
+-- Obtener top 10 productos más vendidos
+SELECT producto_id, COUNT(*) AS total_ventas
+FROM ventas
+GROUP BY producto_id
+ORDER BY total_ventas DESC
+LIMIT 10;
