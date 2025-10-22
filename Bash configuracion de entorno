@@ -1,0 +1,22 @@
+#!/bin/bash
+# Archivo: config_env.sh
+# Configuración de variables de entorno para Hadoop, Hive y SSH
+
+# JAVA
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+# Hadoop
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+
+# Hive
+export HIVE_HOME=/usr/local/hive
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$HIVE_HOME/bin
+
+# Configuración SSH para comunicación entre nodos
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
