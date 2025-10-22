@@ -1,0 +1,21 @@
+# CREACION DE ESTRUCTURA DE DIRECTORIOS
+#!/bin/bash
+# Crear directorios principales en HDFS para Store Chile
+hdfs dfs -mkdir -p /storechile/ventas
+hdfs dfs -mkdir -p /storechile/navegacion
+hdfs dfs -mkdir -p /storechile/inventario
+hdfs dfs -mkdir -p /storechile/clientes
+
+# Verificar la creación
+hdfs dfs -ls /storechile
+
+# CARGA DE DATASETS AL CLUSTER
+#!/bin/bash
+# Subir datasets locales a HDFS
+hdfs dfs -put /home/fabian/datasets/ventas.csv /storechile/ventas/
+hdfs dfs -put /home/fabian/datasets/navegacion.csv /storechile/navegacion/
+hdfs dfs -put /home/fabian/datasets/inventario.csv /storechile/inventario/
+hdfs dfs -put /home/fabian/datasets/clientes.csv /storechile/clientes/
+
+# Verificar la carga
+hdfs dfs -ls /storechile/ventas
