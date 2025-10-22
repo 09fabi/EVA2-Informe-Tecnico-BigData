@@ -1,17 +1,17 @@
-#TRANSFORMACION DE DATOS Y AGREGACION
+-- Archivo: transformacion_ventas.pig
+-- Transformación y agregación de datos de ventas
 
--- load datasets
 ventas = LOAD '/storechile/ventas/ventas.csv' USING PigStorage(',') 
     AS (transaccion_id:chararray, producto_id:chararray, precio:double, metodo_pago:chararray, fecha:chararray, ubicacion:chararray);
 
--- filtrar ventas de un año específico
+-- Filtrar ventas de 2025
 ventas_2025 = FILTER ventas BY fecha MATCHES '2025.*';
 
--- agrupar por producto
+-- Agrupar por producto
 ventas_grouped = GROUP ventas_2025 BY producto_id;
 
--- contar ventas por producto
+-- Contar ventas por producto
 ventas_count = FOREACH ventas_grouped GENERATE group AS producto_id, COUNT(ventas_2025) AS total_ventas;
 
--- almacenar resultados
+-- Almacenar resultados en HDFS
 STORE ventas_count INTO '/storechile/resultados/ventas_count_pig' USING PigStorage(',');
