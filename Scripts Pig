@@ -1,0 +1,17 @@
+#TRANSFORMACION DE DATOS Y AGREGACION
+
+-- load datasets
+ventas = LOAD '/storechile/ventas/ventas.csv' USING PigStorage(',') 
+    AS (transaccion_id:chararray, producto_id:chararray, precio:double, metodo_pago:chararray, fecha:chararray, ubicacion:chararray);
+
+-- filtrar ventas de un año específico
+ventas_2025 = FILTER ventas BY fecha MATCHES '2025.*';
+
+-- agrupar por producto
+ventas_grouped = GROUP ventas_2025 BY producto_id;
+
+-- contar ventas por producto
+ventas_count = FOREACH ventas_grouped GENERATE group AS producto_id, COUNT(ventas_2025) AS total_ventas;
+
+-- almacenar resultados
+STORE ventas_count INTO '/storechile/resultados/ventas_count_pig' USING PigStorage(',');
